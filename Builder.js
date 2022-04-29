@@ -5,22 +5,22 @@ const PermissionString = 'ADMINISTRATOR' || 'KICK_MEMBERS' || 'BAN_MEMBERS' || '
     ICommandData = new Array(), modules = new Map(), aliases = new Map(), Commands = new Map(), ICommands = new Map(), Ibuttons = new Map();
 /** ICommandUpdate */
 const ICommandSet = {
-    /** ApplyGolbalICommand */
-    Apply() {
-        Rest.put(Routes.applicationCommands(client.user.id), { body: ICommandData })
-    },
     /** TestICommand */
     test() {
         Rest.put(Routes.applicationGuildCommands(client.user.id, GuildId), { body: ICommandData })
     },
-    ///** ApplyGuildICommand */
-    //ApplyGuild() {
-    //    client.guilds.cache.forEach(g => Rest.put(Routes.applicationGuildCommands(client.user.id, g.id), { body: ICommandData }))
-    //},
-    /** (value) ? Apply : test */
-    clear(value) {
-        if (value) put(Routes.applicationCommands(client.user.id), { body: [] })
-        Rest.put(Routes.applicationGuildCommands(client.user.id, GuildId), { body: [] })
+    /** ApplyGolbalICommand */
+    Golbal() {
+        Rest.put(Routes.applicationCommands(client.user.id), { body: ICommandData })
+    },
+    /** ApplyGuildsICommand */
+    Guild() {
+        client.guilds.cache.forEach(g => Rest.put(Routes.applicationGuildCommands(client.user.id, g.id), { body: ICommandData }))
+    },
+    /** ClearGuildsICommand */
+    clear() {
+        client.guilds.cache.forEach(g => Rest.put(Routes.applicationGuildCommands(client.user.id, g.id), { body: [] }))
+        return this
     }
 }
 class ButtonBuilder {
@@ -39,15 +39,15 @@ class CommandBuilder {
     constructor(module) {
         this.module = module || 'non-modular'
     }
-    /** @param {PermissionString} permission */
-    setPermissions(...permission) {
-        this.permissions = permission
-        return this
-    }
     /** @param {String[]} alias */
     setName(...alias) {
         this.alias = alias.filter(als => typeof als == 'string' && als != '' && !als.includes(' '))
         this.name = this.alias.shift()
+        return this
+    }
+    /** @param {PermissionString} permission */
+    setPermissions(...permission) {
+        this.permissions = permission
         return this
     }
     /** @param {(message:Message,args:string[])} exec */
@@ -69,12 +69,9 @@ class CommandBuilder {
     }
 }
 class ICommandBuilder extends SlashCommandBuilder {
-    constructor() {
-        return super()
-    }
     /** @param {PermissionString} permission */
     setRolePermission(...permission) {
-        if (this.defaultPermission != false) return this
+        this.setDefaultPermission(false)
         permission.concat('ADMINISTRATOR')
         this.permissions = []
         client.guilds.cache.forEach(g => g.roles.cache.forEach(r => {
