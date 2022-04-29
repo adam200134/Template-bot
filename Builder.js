@@ -1,25 +1,25 @@
 const PermissionString = 'ADMINISTRATOR' || 'KICK_MEMBERS' || 'BAN_MEMBERS' || 'ADD_REACTIONS' || 'SEND_MESSAGES' || 'MUTE_MEMBERS' || 'MANAGE_ROLES'
-    || 'MANAGE_WEBHOOKS' || 'MANAGE_EMOJIS_AND_STICKERS' || 'USE_APPLICATION_COMMANDS', { client, GuildId, token } = require("./config"),
+    || 'MANAGE_WEBHOOKS' || 'MANAGE_EMOJIS_AND_STICKERS' || 'USE_APPLICATION_COMMANDS', { client, GuildId, token, ownerID } = require("./config"),
     Rest = new (require('@discordjs/rest')).REST({ version: '9' }).setToken(token), { SlashCommandBuilder } = require("@discordjs/builders"),
     { Routes } = require('discord-api-types/v9'), { Message, CommandInteraction, ButtonInteraction, MessageEmbed } = require("discord.js"),
     ICommandData = new Array(), modules = new Map(), aliases = new Map(), Commands = new Map(), ICommands = new Map(), Ibuttons = new Map();
 /** ICommandUpdate */
 const ICommandSet = {
-    /** ApplyGolbalICommand */
-    Apply() {
-        Rest.put(Routes.applicationCommands(client.user.id), { body: ICommandData })
-    },
     /** TestICommand */
     test() {
         Rest.put(Routes.applicationGuildCommands(client.user.id, GuildId), { body: ICommandData })
     },
-    ///** ApplyGuildICommand */
-    //ApplyGuild() {
-    //    client.guilds.cache.forEach(g => Rest.put(Routes.applicationGuildCommands(client.user.id, g.id), { body: ICommandData }))
-    //},
-    /** (value) ? Apply : test */
-    clear(value) {
-        if (value) put(Routes.applicationCommands(client.user.id), { body: [] })
+    /** ApplyGolbalICommand */
+    Golbal() {
+        Rest.put(Routes.applicationCommands(client.user.id), { body: ICommandData })
+    },
+    /** ApplyGuildICommand */
+    Guild() {
+        client.guilds.cache.forEach(g => Rest.put(Routes.applicationGuildCommands(client.user.id, g.id), { body: ICommandData }))
+    },
+    /** ClearGuildICommand */
+    clear() {
+        Rest.put(Routes.applicationCommands(client.user.id), { body: [] })
         Rest.put(Routes.applicationGuildCommands(client.user.id, GuildId), { body: [] })
     }
 }
@@ -65,7 +65,7 @@ class CommandBuilder {
         modules.set(this.module, this.cmdlist)
         Commands.set(this.name, { modules: this.module, aliases: this.alias, permissions: this.permissions, run: exec })
         this.alias.forEach(als => aliases.set(als, this.name))
-        return this
+        return new CommandBuilder(this.module)
     }
 }
 class ICommandBuilder extends SlashCommandBuilder {
@@ -74,20 +74,21 @@ class ICommandBuilder extends SlashCommandBuilder {
     }
     /** @param {PermissionString} permission */
     setRolePermission(...permission) {
-        if (this.defaultPermission != false) return this
-        permission.concat('ADMINISTRATOR')
-        this.permissions = []
-        client.guilds.cache.forEach(g => g.roles.cache.forEach(r => {
-            if (r.permissions.has(permission) && r.members.find(m => !m.user.bot))
-                this.permissions.push({ id: r.id, type: 1, permission: true })
-        }))
+        if (this.defaultPermission == false) {
+            permission.concat('ADMINISTRATOR')
+            this.permissions = [{ id: ownerID, type: 2, permission: true }]
+            client.guilds.cache.forEach(g => g.roles.cache.forEach(r => {
+                if (r.permissions.has(permission) && r.members.find(m => !m.user.bot))
+                    this.permissions.push({ id: r.id, type: 1, permission: true })
+            }))
+        }
         return this
     }
     /** @param {(interaction:CommandInteraction)} exec */
     setexec(exec) {
         ICommands.set(this.name, { name: this.name, permissions: this.permissions, run: exec })
         ICommandData.push(this.toJSON());
-        return this
+        return new ICommandBuilder()
     }
 }
 class Embed extends MessageEmbed {
