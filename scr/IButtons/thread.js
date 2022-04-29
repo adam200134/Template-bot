@@ -1,4 +1,4 @@
-const { ButtonBuilder } = require('../setting/ExecuteBuilder');
+const { ButtonBuilder }  
 const { db } = require('../setting/config');
 new ButtonBuilder()
     .addbutton('report', async (interaction) => {

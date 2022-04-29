@@ -1,9 +1,7 @@
-const { CommandBuilder } = require('../setting/ExecuteBuilder');
-var { ownerID, db } = require('../setting/config');
-var { Embed } = require('../setting/tip')
-const path = require('path');
+var { CommandBuilder,Embed } = require('../../Builder'), { ownerID, db } = require('../../config'), path = require('path');
+
 new CommandBuilder(path.parse(__filename).name)
-    .setname('character','char')
+    .setName('character','char')
     .setexec((message, args) => {
         if (`${message.author.id}` != `${ownerID}`) return;
         let id = ``, char, avatar = ``, embed

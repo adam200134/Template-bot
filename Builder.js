@@ -120,5 +120,5 @@ function TmpEb(...args) {
 }
 module.exports = {
     modules, aliases, Commands, ICommands, Ibuttons, ICommandSet,
-    ButtonBuilder, CommandBuilder, ICommandBuilder, Temp, TmpEb
+    ButtonBuilder, CommandBuilder, ICommandBuilder, Embed, Temp, TmpEb
 }
