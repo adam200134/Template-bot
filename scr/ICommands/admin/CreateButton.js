@@ -1,4 +1,4 @@
-var { ButtonBuilder, ICommandBuilder } = require('../../../Builder'), { MessageActionRow, MessageButton } = require('discord.js')
+var { ICommandBuilder } = require('../../../Builder'), { MessageActionRow, MessageButton } = require('discord.js')
 
 new ICommandBuilder()
     .setName('create-button')

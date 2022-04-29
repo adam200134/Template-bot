@@ -1,5 +1,5 @@
-var { ICommandBuilder } = require('../../../Builder')
-var { Embed, St } = require('../../setting/tip')
+var { Embed,ICommandBuilder } = require('../../../Builder')
+
 new ICommandBuilder()
     .setName('server')
     .setDescription(`伺服器資訊`).setexec(async (interaction) => {

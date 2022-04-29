@@ -1,8 +1,8 @@
-var { ICommandBuilder } = require('../../../Builder')
-var {Embed,St } = require('../../setting/tip')
- new ICommandBuilder()
-        .setName('user')
-        .setDescription(`使用者資訊`).setexec(async(interaction)=> {
+var { Embed, ICommandBuilder } = require('../../../Builder')
+
+new ICommandBuilder()
+    .setName('user')
+    .setDescription(`使用者資訊`).setexec(async (interaction) => {
 
         const { guild, user } = interaction
 
@@ -19,6 +19,6 @@ var {Embed,St } = require('../../setting/tip')
             )
             .setFooter({ text: `ID: ${user.id}`, iconURL: '' })
             .setTimestamp(interaction.createdAt.toString())
-              
+
         return interaction.reply({ embeds: [embed] })
     })
