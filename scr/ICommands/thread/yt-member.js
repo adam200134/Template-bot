@@ -1,10 +1,9 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const db = require('better-sqlite3')('./data.db')
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('yt-member')
-        .setDescription(' #會限手動申請專用 請先確認伺服器是否有此頻道'),
-    async execute(interaction) {
+var { ICommandBuilder } = require('../../../Builder'), { db } = require('../../../config')
+
+new ICommandBuilder()
+    .setName('yt-member')
+    .setDescription(' #會限手動申請專用 請先確認伺服器是否有此頻道')
+    .setexec(async (interaction) => {
         let tr = (interaction.guild.premiumSubscriptionCount < 7) ? ['此伺服器加成等級不足 2 無法建立私人討論串\n請將截圖私訊給管理員']
             : (interaction.channel.name != '會限手動申請') ? ['請在特定頻道使用'] : ['會限申請專用討論串已為您建立，請放心的在該討論串傳送截圖\n', true]
         await interaction.reply({ content: `**__${tr[0]}__**`, ephemeral: true })
@@ -27,5 +26,4 @@ module.exports = {
                 `請放心，這個討論串只有您與 ${role} 看的見\n` +
                 `請將您的__**YT會員的到期日**__ 與 __**DISCORD的帳號**__的截圖傳到這裡。`)
         }
-    }
-};
+    })

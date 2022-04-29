@@ -1,10 +1,8 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+var { ICommandBuilder } = require('../../../Builder')
 var {Embed,St } = require('../../setting/tip')
-module.exports = {
-    data: new SlashCommandBuilder()
+ new ICommandBuilder()
         .setName('user')
-        .setDescription(`使用者資訊`),
-    async execute(interaction) {
+        .setDescription(`使用者資訊`).setexec(async(interaction)=> {
 
         const { guild, user } = interaction
 
@@ -23,5 +21,4 @@ module.exports = {
             .setTimestamp(interaction.createdAt.toString())
               
         return interaction.reply({ embeds: [embed] })
-    }
-}
+    })

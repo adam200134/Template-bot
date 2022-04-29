@@ -1,6 +1,5 @@
-const { CommandBuilder,Embed } = require('../../Builder') = require('../setting/ExecuteBuilder')
+var { CommandBuilder, Embed } = require('../../Builder'), path = require('path');
 
-const path = require('path');
 new CommandBuilder(path.parse(__filename).name)
     .setName('ping')
     .setexec((message, args) => {
@@ -10,7 +9,7 @@ new CommandBuilder(path.parse(__filename).name)
             })
         })
     })
-    .setName('guildrole','gr')
+    .setName('guildrole', 'gr')
     .setexec((message, args) => {
         let user = message.mentions.users.first() || message.author
 
@@ -24,7 +23,7 @@ new CommandBuilder(path.parse(__filename).name)
 
         message.channel.send({ embeds: [embed] })
     })
-    .setName('roleuser,','ru')
+    .setName('roleuser,', 'ru')
     .setexec((message, args) => {
         let role = message.mentions.roles.first()
         if (!role) role = message.guild.roles.cache.get(`${args[0]}`)
@@ -38,7 +37,7 @@ new CommandBuilder(path.parse(__filename).name)
 
         message.channel.send({ embeds: [embed] })
     })
-    .setName('guilddata','gd')
+    .setName('guilddata', 'gd')
     .setexec((message, args) => {
         let embed = new Embed(true)
             .setTitle(`Total Members`)

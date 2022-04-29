@@ -1,12 +1,10 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
- var  { Embed,St }= require('../../setting/tip')
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('server')
-        .setDescription(`伺服器資訊`),
-    async execute(interaction) {
+var { ICommandBuilder } = require('../../../Builder')
+var { Embed, St } = require('../../setting/tip')
+new ICommandBuilder()
+    .setName('server')
+    .setDescription(`伺服器資訊`).setexec(async (interaction) => {
         const { guild } = interaction
-        
+
         const embed = new Embed(true)
             .setTitle(guild.name)
             .setDescription('ID:' + guild.id)
@@ -19,7 +17,7 @@ module.exports = {
             )
             .setFooter({ text: '建立時間', iconURL: '' })
             .setTimestamp(guild.createdAt.toString())
-              
+
         return interaction.reply({ embeds: [embed] })
-    }
-}
+    
+})

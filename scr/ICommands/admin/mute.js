@@ -1,15 +1,13 @@
 const ms = require('ms');
-const { SlashCommandBuilder } = require('@discordjs/builders');
+var { ICommandBuilder } = require('../../../Builder')
 const { Embed, St } = require('../../setting/tip')
-module.exports = {
-    data: new SlashCommandBuilder()
+ new ICommandBuilder()
         .setName('mute').setDescription('禁言').setDefaultPermission(false)
         .addUserOption(option => option.setName('user').setDescription('使用者'))
         .addStringOption(option => option.setName('reason').setDescription('原因'))
         .addStringOption(option => option.setName('time').setDescription('時間').setRequired(false)
             .addChoice("7d", "7d").addChoice("3d", "3d").addChoice("1d", "1d")
-            .addChoice("12h", "12h").addChoice("1h", "1h").addChoice("30m", "30m").addChoice("5m", "5m")),
-    async execute(interaction) {
+            .addChoice("12h", "12h").addChoice("1h", "1h").addChoice("30m", "30m").addChoice("5m", "5m")).setexec(async(interaction)=> {
         const Permit = interaction.memberPermissions
         if (!Permit.has("MANAGE_ROLES") && !Permit.has("ADMINISTRATOR"))
             return interaction.reply({ content: '你沒有權限', ephemeral: true })

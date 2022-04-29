@@ -1,7 +1,7 @@
 var { CommandBuilder, Embed } = require('../../Builder'), { prefix } = require('../../config'), path = require('path');
 
 new CommandBuilder(path.parse(__filename).name)
-    .setName('help','h')
+    .setName('help', 'h')
     .setexec((message, args) => {
         if (!args[0]) message.channel.send(`\`${prefix}help modules\`\n\`${prefix}help [cmds]\``)
         let eb = new Embed(true)

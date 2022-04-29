@@ -1,10 +1,8 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const db = require('better-sqlite3')('./data.db')
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('report')
-        .setDescription(' #匿名檢舉專用 先確認伺服器是否有此頻道'),
-    async execute(interaction) {
+var { ICommandBuilder } = require('../../../Builder'), { db } = require('../../../config')
+new ICommandBuilder()
+    .setName('report')
+    .setDescription(' #匿名檢舉專用 先確認伺服器是否有此頻道')
+    .setexec(async (interaction) => {
         let tr = (interaction.guild.premiumSubscriptionCount < 7) ? ['此伺服器加成等級不足 2 無法建立私人討論串']
             : (interaction.channel.name != '匿名檢舉') ? ['請在特定頻道使用'] : ['請將您要投訴的內容、訊息鏈結、截圖都貼在討論串，會由管理員進行處置。', true]
         await interaction.reply({ content: `**__${tr[0]}__**`, ephemeral: true })
@@ -27,5 +25,4 @@ module.exports = {
                 `請放心，這個討論串只有您與 ${role} 看的見\n` +
                 `投訴專用討論串已為您建立，請放心的在該討論串進行投訴`)
         }
-    }
-}
+    })

@@ -1,13 +1,7 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+var { ICommandBuilder } = require('../../../Builder')
 const { MessageActionRow, MessageSelectMenu, MessageButton } = require('discord.js')
-module.exports = {
-    data: new SlashCommandBuilder()
-        .setName('test')
-        .setDescription('owner only')
-    //.addStringOption(option => option.setName('selbtn').setDescription('選擇按鈕').setRequired(true)
-    //.addChoice("會限申請", "ytmember").addChoice("檢舉", "report"))
-    ,
-    async execute(interaction) {
+new ICommandBuilder().setName('test').setDescription('test1')
+    .setexec(async (interaction) => {
         const Permit = interaction.memberPermissions
         //const btnid = interaction.options.getString('selbtn');
         if (!Permit.has("MANAGE_ROLES") && !Permit.has("ADMINISTRATOR")) return
@@ -40,9 +34,8 @@ module.exports = {
                     ])
                 ),
                 new MessageActionRow()
-                .addComponents(new MessageButton().setCustomId('id').setLabel('會限申請').setStyle('PRIMARY'))
-                .addComponents(new MessageButton().setCustomId('ue').setLabel('123').setStyle('DANGER'))
+                    .addComponents(new MessageButton().setCustomId('id').setLabel('會限申請').setStyle('PRIMARY'))
+                    .addComponents(new MessageButton().setCustomId('ue').setLabel('123').setStyle('DANGER'))
             ]
         })
-    }
-}
+    })

@@ -1,8 +1,7 @@
+var { CommandBuilder, Embed } = require('../../Builder'), path = require('path');
 
-const { CommandBuilder ,Embed} = require('../../Builder')
-const path = require('path');
 new CommandBuilder(path.parse(__filename).name)
-    .setName('avater','av')
+    .setName('avater', 'av')
     .setexec((message, args) => {
         let user = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
         const embed = new Embed(true).setImage(user.displayAvatarURL({ size: 4096, dynamic: true, format: "png" }))

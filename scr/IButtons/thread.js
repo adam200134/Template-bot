@@ -1,5 +1,4 @@
-const { ButtonBuilder }  
-const { db } = require('../setting/config');
+var { ButtonBuilder } = require('../../Builder'), { db } = require('../../config');
 new ButtonBuilder()
     .addbutton('report', async (interaction) => {
         let tr = (interaction.guild.premiumSubscriptionCount < 7) ? ['此伺服器加成等級不足 2 無法建立私人討論串']
