@@ -5,7 +5,7 @@ client.once("ready", () => { //初始化
     //fs.readdirSync('./scr').filter(n => !n.endsWith('.js')).forEach(rd => fs.readdirSync(`./scr/${rd}`)
     //    .filter(n => n.endsWith('.js')).forEach(f => require(`./scr/${rd}/${f}`)))
 
-    ICommandSet.clear()
+    ICommandSet.test()
     console.log(`\n>> GUILD:${client.guilds.cache.size}`)
     console.log(`[P:${Commands.size} S:${ICommands.size}]`)
     /*
