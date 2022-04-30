@@ -2,7 +2,7 @@ const PermissionString = 'ADMINISTRATOR' || 'KICK_MEMBERS' || 'BAN_MEMBERS' || '
     || 'MANAGE_WEBHOOKS' || 'MANAGE_EMOJIS_AND_STICKERS' || 'USE_APPLICATION_COMMANDS', { client, GuildId, token, ownerID } = require("./config"),
     Rest = new (require('@discordjs/rest')).REST({ version: '9' }).setToken(token), { SlashCommandBuilder } = require("@discordjs/builders"),
     { Routes } = require('discord-api-types/v9'), { Message, CommandInteraction, ButtonInteraction, MessageEmbed } = require("discord.js"),
-    ICommandData = new Array(), modules = new Map(), aliases = new Map(), Commands = new Map(), ICommands = new Map(), Ibuttons = new Map();
+    ICommandData = new Array(), modules = new Map(), aliases = new Map(), Commands = new Map(), ICommands = new Map(), IButtons = new Map();
 /** ICommandUpdate */
 const ICommandSet = {
     /** TestICommand */
@@ -20,7 +20,7 @@ const ICommandSet = {
     /** ClearGuildICommand */
     clear() {
         Rest.put(Routes.applicationCommands(client.user.id), { body: [] })
-        Rest.put(Routes.applicationGuildCommands(client.user.id, GuildId), { body: [] })
+        client.guilds.cache.forEach(g => Rest.put(Routes.applicationGuildCommands(client.user.id, g.id), { body: ICommandData }))
     }
 }
 class ButtonBuilder {
@@ -30,7 +30,7 @@ class ButtonBuilder {
      */
     addbutton(btnId, exec) {
         if (typeof btnId == 'string' && btnId != '' && typeof exec == 'function')
-            Ibuttons.set(btnId, { run: exec })
+            IButtons.set(btnId, { run: exec })
         return this
     }
 }
@@ -123,6 +123,6 @@ function TmpEb(...args) {
     return args[0] ? _.setDescription(Temp(...args)) : _
 }
 module.exports = {
-    modules, aliases, Commands, ICommands, Ibuttons, ICommandSet,
+    modules, aliases, Commands, ICommands, IButtons, ICommandSet,
     ButtonBuilder, CommandBuilder, ICommandBuilder, Embed, Temp, TmpEb
 }

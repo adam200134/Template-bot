@@ -1,11 +1,11 @@
-var { aliases, Commands, ICommands, ICommandSet } = require('./Builder'), { token, client, prefix } = require('./config'), fs = require('fs');
+var { aliases, Commands, ICommands, ICommandSet, Ibuttons } = require('./Builder'), { token, client, prefix } = require('./config'), fs = require('fs');
 client.once("ready", () => { //初始化
     console.log(`\n${new Date().toLocaleString()}\n${client.user.tag} 已登入`)
 
-    fs.readdirSync('./scr').filter(n => !n.endsWith('.js')).forEach(rd => fs.readdirSync(`./scr/${rd}`)
-        .filter(n => n.endsWith('.js')).forEach(f => require(`./scr/${rd}/${f}`)))
+    //fs.readdirSync('./scr').filter(n => !n.endsWith('.js')).forEach(rd => fs.readdirSync(`./scr/${rd}`)
+    //    .filter(n => n.endsWith('.js')).forEach(f => require(`./scr/${rd}/${f}`)))
 
-    ICommandSet.test()
+    ICommandSet.clear()
     console.log(`\n>> GUILD:${client.guilds.cache.size}`)
     console.log(`[P:${Commands.size} S:${ICommands.size}]`)
     /*
@@ -20,12 +20,28 @@ client.once("ready", () => { //初始化
 client.on("interactionCreate", (interaction) => {
     try {
         const { guild, channel, user } = interaction
+        //if(interaction.isMessageComponent()) console.log(interaction);
         if (interaction.isCommand()) {
             const { commandName } = interaction
             const ICommand = ICommands.get(commandName);
             if (!ICommand) return;
             console.log(`\n${new Date().toLocaleString()}\n${guild.name} #${channel.name}\n${user.tag} use /${commandName}`)
             ICommand.run(interaction);
+            /*
+        } else if (interaction.isSelectMenu()) {
+            const { customId } = interaction
+            const IMenu = IMenu.get(customId);
+            if (!IMenu) return;
+            console.log(`\n${new Date().toLocaleString()}\n${guild.name} #${channel.name}\n${user.tag} click ${customId}`)
+            IMenu.run(interaction);
+            */
+        } else if (interaction.isButton()) {
+            const { customId } = interaction
+            const IButton = Ibuttons.get(customId);
+            if (IButton) {
+                console.log(`\n${new Date().toLocaleString()}\n${guild.name} #${channel.name}\n${user.tag} click ${customId}`)
+                IButton.run(interaction);
+            } else { computer(client, interaction) }
         }
     } catch (error) { console.error(error) }
 });
