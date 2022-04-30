@@ -1,16 +1,13 @@
-var { aliases, Commands, ICommands, ICommandSet, IButtons } = require('./Builder'), { token, client, prefix } = require('./config'), fs = require('fs');
+var { aliases, Commands, ICommands, ICommandSet, IButtons } = require('./Builder'),
+    { token, client, prefix } = require('./config'), fs = require('fs');
+
 client.once("ready", () => { //初始化
-    console.log(`\n${new Date().toLocaleString()}\n${client.user.tag} 已登入`)
 
     //load command
     fs.readdirSync('./scr').filter(n => !n.endsWith('.js')).forEach(rd => fs.readdirSync(`./scr/${rd}`)
         .filter(n => n.endsWith('.js')).forEach(f => require(`./scr/${rd}/${f}`)))
-
     //Put slashCommands
-    ICommandSet.test() 
-
-    console.log(`\n>> GUILD:${client.guilds.cache.size}`)
-    console.log(`[P:${Commands.size} S:${ICommands.size}]`)
+    ICommandSet.test()
     /*
     //  指令初始化檢測
     ICommands.forEach(Icmd=>console.log(Icmd))
@@ -19,6 +16,9 @@ client.once("ready", () => { //初始化
         cmd.forEach(m => console.log(` ${m}:`, Commands.get(m)))
     })
     */
+    console.log(`\n${new Date().toLocaleString()}\n${client.user.tag} 已登入`)
+    console.log(`\n>> GUILD:${client.guilds.cache.size}`)
+    console.log(`[P:${Commands.size} S:${ICommands.size}]`)
 });
 client.on("interactionCreate", (interaction) => {
     try {
@@ -55,7 +55,8 @@ client.on("messageCreate", (message) => {
         const cmd = args.shift().slice(prefix.length);
         const command = Commands.get(aliases.get(cmd) || cmd)
         if (!command) return
-        if (!Array.isArray(command.permissions) || !message.member.permissions.any(command.permissions)) return
+        if ((Array.isArray(command.permissions) && command.permissions.length > 0)
+            || !message.member.permissions.has(command.permissions)) return
         //if (!chack(message, command)) return
         console.log(`\n${new Date().toLocaleString()}\n${message.guild.name} #${message.channel.name}\n${message.author.tag} use ${message.content}`)
         command.run(message, args)
