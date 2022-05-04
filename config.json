@@ -1,0 +1,45 @@
+{
+    "prefix": "=",
+    "ownerID": "",
+    "token": "",
+    "TestGuildId": "",
+    "weather": "",
+    "color": {
+        "fin": "#00ff80",
+        "wor": "#a00000"
+    },
+    "//0":"單位 : min",
+    "stime": {
+        "add": 5,
+        "max": 180
+    },
+    "//1":"gc.chance: 2 => 2%",
+    "gc": {
+        "min": 10,
+        "max": 100,
+        "timer": 600,
+        "chance": 2
+    },
+    "actline": [
+        {
+            "name": "twitter",
+            "type": "WATCHING"
+        },
+        {
+            "name": "夜に駆ける",
+            "type": "LISTENING"
+        },
+        {
+            "name": "=help",
+            "type": "PLAYING"
+        },
+        {
+            "name": "Hamidashi Creative",
+            "type": "STREAMING"
+        },
+        {
+            "name": "ひよひよ",
+            "type": "COMPETING"
+        }
+    ]
+}

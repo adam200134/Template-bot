@@ -1,7 +1,8 @@
-var { CommandBuilder, Embed } = require('../../Builder'), path = require('path');
 
-new CommandBuilder(path.parse(__filename).name)
-    .setName('avater', 'av')
+const { CommandBuilder,Embed } = require('../../setting/Builder');
+
+new CommandBuilder(__filename.slice(__dirname.length + 1, -3))
+    .setName('avater','av')
     .setexec((message, args) => {
         let user = message.mentions.users.first() || client.users.cache.get(args[0]) || message.author;
         const embed = new Embed(true).setImage(user.displayAvatarURL({ size: 4096, dynamic: true, format: "png" }))
@@ -15,7 +16,7 @@ new CommandBuilder(path.parse(__filename).name)
         }
         message.channel.send(ctx)
     })
-    .setName('emoji')
+    .setName('emoji','emj')
     .setexec((message, args) => {
         let emoji = ``
         let noemj = ``

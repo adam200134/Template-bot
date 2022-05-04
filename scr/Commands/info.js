@@ -1,6 +1,6 @@
-var { CommandBuilder, Embed } = require('../../Builder'), path = require('path');
+const {client, CommandBuilder, Embed } = require('../../setting/Builder')
 
-new CommandBuilder(path.parse(__filename).name)
+new CommandBuilder(__filename.slice(__dirname.length + 1, -3))
     .setName('ping')
     .setexec((message, args) => {
         message.channel.send('Pinging...').then(msg => {
@@ -23,7 +23,7 @@ new CommandBuilder(path.parse(__filename).name)
 
         message.channel.send({ embeds: [embed] })
     })
-    .setName('roleuser,', 'ru')
+    .setName('roleuser', 'ru')
     .setexec((message, args) => {
         let role = message.mentions.roles.first()
         if (!role) role = message.guild.roles.cache.get(`${args[0]}`)
